@@ -1,6 +1,6 @@
-name: Deploy AevumPay to QDay Aevum Testnet
+name: "Deploy AevumPay to QDay Aevum Testnet"
 
-on:
+'on':
   workflow_dispatch:
     inputs:
       confirm_deploy:
