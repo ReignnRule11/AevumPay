@@ -1,0 +1,10 @@
+out/
+cache/
+broadcast/
+lib/
+node_modules/
+.next/
+.env
+.env.*
+!.env.example
+coverage/
