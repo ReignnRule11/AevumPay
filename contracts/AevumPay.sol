@@ -59,7 +59,7 @@ contract AevumPay is ReentrancyGuard {
         Invoice storage invoice = _invoices[invoiceId];
         if (invoice.status == InvoiceStatus.None) revert InvoiceNotFound();
         if (invoice.status != InvoiceStatus.Open) revert InvoiceNotOpen();
-        if (block.timestamp > invoice.expiresAt) revert InvoiceExpired();
+        if (block.timestamp >= invoice.expiresAt) revert InvoiceExpired();
         if (invoice.designatedPayer != address(0) && invoice.designatedPayer != msg.sender) revert WrongPayer();
 
         uint256 amount = uint256(invoice.amount);
