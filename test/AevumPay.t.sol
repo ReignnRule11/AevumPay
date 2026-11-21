@@ -80,4 +80,51 @@ contract AevumPayTest is Test {
         vm.prank(merchant); pay.cancelInvoice(id);
         assertEq(uint256(pay.getInvoice(id).status), uint256(AevumPay.InvoiceStatus.Cancelled));
     }
+
+    function testCannotCreateZeroAmount() public {
+        vm.prank(merchant);
+        vm.expectRevert(AevumPay.ZeroAmount.selector);
+        pay.createInvoice(address(0), 0, uint64(block.timestamp + 1 days), bytes32(0));
+    }
+
+    function testCannotCreateWithInvalidExpiry() public {
+        vm.prank(merchant);
+        vm.expectRevert(AevumPay.InvalidExpiry.selector);
+        pay.createInvoice(address(0), AMOUNT, uint64(block.timestamp), bytes32(0));
+    }
+
+    function testCannotCreateAmountAboveUint128() public {
+        vm.prank(merchant);
+        vm.expectRevert(AevumPay.AmountTooLarge.selector);
+        pay.createInvoice(address(0), uint256(type(uint128).max) + 1, uint64(block.timestamp + 1 days), bytes32(0));
+    }
+
+    function testCannotReadUnknownInvoice() public {
+        vm.expectRevert(AevumPay.InvoiceNotFound.selector);
+        pay.getInvoice(bytes32(0));
+    }
+
+    function testCannotCancelPaidInvoice() public {
+        bytes32 id = _create(uint64(block.timestamp + 1 days), address(0));
+        vm.prank(payer);
+        pay.pay(id);
+        vm.prank(merchant);
+        vm.expectRevert(AevumPay.InvoiceNotOpen.selector);
+        pay.cancelInvoice(id);
+    }
+
+    function testCannotPayWithoutAllowance() public {
+        bytes32 id = _create(uint64(block.timestamp + 1 days), address(0));
+        vm.prank(payer);
+        token.approve(address(pay), 0);
+        vm.prank(payer);
+        vm.expectRevert();
+        pay.pay(id);
+    }
+
+    function testConstructorRejectsZeroToken() public {
+        vm.expectRevert(AevumPay.ZeroAddress.selector);
+        new AevumPay(IERC20(address(0)));
+    }
+
 }
