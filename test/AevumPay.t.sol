@@ -59,9 +59,16 @@ contract AevumPayTest is Test {
         vm.prank(payer); pay.pay(id);
         vm.prank(payer); vm.expectRevert(AevumPay.InvoiceNotOpen.selector); pay.pay(id);
     }
+    function testInvoiceCannotBePaidAtExactExpiry() public {
+        uint64 expiry = uint64(block.timestamp + 1 hours);
+        bytes32 id = _create(expiry, address(0));
+        vm.warp(expiry);
+        vm.prank(payer); vm.expectRevert(AevumPay.InvoiceExpired.selector); pay.pay(id);
+    }
     function testExpiredInvoiceCannotBePaid() public {
-        bytes32 id = _create(uint64(block.timestamp + 1 hours), address(0));
-        vm.warp(block.timestamp + 1 hours + 1);
+        uint64 expiry = uint64(block.timestamp + 1 hours);
+        bytes32 id = _create(expiry, address(0));
+        vm.warp(uint256(expiry) + 1);
         vm.prank(payer); vm.expectRevert(AevumPay.InvoiceExpired.selector); pay.pay(id);
     }
     function testOnlyMerchantCanCancel() public {
