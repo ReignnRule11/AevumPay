@@ -18,7 +18,6 @@ jobs:
     env:
       AEVUM_RPC_URL: https://rpc-test.qday.info
       TUSD8_ADDRESS: 0x456569838f1d43009A91ebA4263147Afd7233483
-      PRIVATE_KEY: ${{ secrets.AEVUM_DEPLOYER_PRIVATE_KEY }}
     steps:
       - uses: actions/checkout@v4
       - name: Install Foundry
@@ -26,6 +25,8 @@ jobs:
         with:
           version: stable
       - name: Validate deployer secret
+        env:
+          PRIVATE_KEY: ${{ secrets.AEVUM_DEPLOYER_PRIVATE_KEY }}
         run: test -n "$PRIVATE_KEY"
       - name: Install pinned dependencies
         run: |
@@ -34,6 +35,8 @@ jobs:
       - name: Build contracts
         run: forge build
       - name: Deploy contract
+        env:
+          PRIVATE_KEY: ${{ secrets.AEVUM_DEPLOYER_PRIVATE_KEY }}
         run: forge script script/Deploy.s.sol:Deploy --rpc-url "$AEVUM_RPC_URL" --broadcast
       - name: Preserve deployment record
         run: |
