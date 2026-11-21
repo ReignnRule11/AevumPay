@@ -1,0 +1,21 @@
+# Competition demo checklist
+
+- [ ] DoraHacks registration confirmed
+- [ ] Aevum testnet configured (chain ID 44005)
+- [ ] tQDAY and tUSD8 obtained from official faucets
+- [ ] tUSD8 address independently verified against current QDay docs
+- [ ] Foundry unit tests pass
+- [ ] Contract deployed to Aevum testnet
+- [ ] Source verified on official explorer if supported
+- [ ] Merchant creates invoice
+- [ ] Payer approves exact amount
+- [ ] Payer settles invoice
+- [ ] Merchant receives exact requested amount
+- [ ] Duplicate payment rejected
+- [ ] Wrong payer rejected for restricted invoice
+- [ ] Expired and cancelled invoices rejected
+- [ ] UI shows transaction hash and explorer link
+- [ ] UI distinguishes pending, seen and final
+- [ ] README setup and deployment steps verified
+- [ ] 3–5 minute demo rehearsed
+- [ ] No secrets or seed phrases committed
