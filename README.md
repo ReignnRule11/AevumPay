@@ -40,8 +40,31 @@ The MVP deliberately excludes pooled custody, protocol fees, arbitrary token sel
 contracts/       Solidity settlement contract
 test/            Foundry tests with a local mock token
 script/          Deployment script
-docs/            Architecture, threat model and demo checklist
+frontend/        Next.js + viem wallet-connected merchant/payer interface
+docs/            Architecture, threat model, deployment and demo checklist
+.github/workflows/  Solidity CI, web CI and gated testnet deployment
 ```
+
+## Frontend
+
+See [frontend/README.md](frontend/README.md). In short:
+
+```bash
+cd frontend
+npm install
+cp .env.local.example .env.local
+# Set NEXT_PUBLIC_AEVUMPAY_ADDRESS after contract deployment
+npm run typecheck
+npm run build
+npm run dev
+```
+
+The UI connects to an injected EVM wallet, creates and fetches invoices, requests exact tUSD8 approval and submits payment transactions. Invoice actions remain disabled until the deployed contract address is configured.
+
+## Deployment
+
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). A manually gated GitHub Actions workflow is provided; it requires a dedicated test-only wallet private key stored as the repository secret `AEVUM_DEPLOYER_PRIVATE_KEY`. Never commit or share private keys.
+
 
 ## Prerequisites
 
