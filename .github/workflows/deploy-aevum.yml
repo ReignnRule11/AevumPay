@@ -1,0 +1,48 @@
+name: Deploy AevumPay to QDay Aevum Testnet
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_deploy:
+        description: "Type DEPLOY_TO_TESTNET to authorize a testnet deployment"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: ${{ github.event.inputs.confirm_deploy == 'DEPLOY_TO_TESTNET' }}
+    runs-on: ubuntu-latest
+    env:
+      AEVUM_RPC_URL: https://rpc-test.qday.info
+      TUSD8_ADDRESS: 0x456569838f1d43009A91ebA4263147Afd7233483
+      PRIVATE_KEY: ${{ secrets.AEVUM_DEPLOYER_PRIVATE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Validate deployer secret
+        run: test -n "$PRIVATE_KEY"
+      - name: Install pinned dependencies
+        run: |
+          forge install OpenZeppelin/openzeppelin-contracts@v5.4.0 --no-commit
+          forge install foundry-rs/forge-std@v1.9.7 --no-commit
+      - name: Build contracts
+        run: forge build
+      - name: Deploy contract
+        run: forge script script/Deploy.s.sol:Deploy --rpc-url "$AEVUM_RPC_URL" --broadcast
+      - name: Preserve deployment record
+        run: |
+          test -f broadcast/Deploy.s.sol/44005/run-latest.json
+          cp broadcast/Deploy.s.sol/44005/run-latest.json deployment-aevum-testnet.json
+      - name: Upload deployment record
+        uses: actions/upload-artifact@v4
+        with:
+          name: aevumpay-aevum-testnet-deployment
+          path: deployment-aevum-testnet.json
+          if-no-files-found: error
+          retention-days: 30
