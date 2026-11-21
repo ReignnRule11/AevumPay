@@ -192,8 +192,15 @@ export default function Home() {
         functionName: "getInvoice",
         args: [invoiceId as Hex]
       });
-      const [merchant, designatedPayer, value, expiresAt, status, externalRef] = result;
-      setInvoice({ id: invoiceId as Hex, merchant, designatedPayer, amount: value, expiresAt, status, externalRef });
+      setInvoice({
+        id: invoiceId as Hex,
+        merchant: result.merchant,
+        designatedPayer: result.designatedPayer,
+        amount: result.amount,
+        expiresAt: result.expiresAt,
+        status: result.status,
+        externalRef: result.externalRef
+      });
       setNotice("Invoice details loaded directly from QDay Aevum.");
     } catch (error) {
       setInvoice(undefined);
@@ -244,8 +251,15 @@ export default function Home() {
         functionName: "getInvoice",
         args: [invoice.id]
       });
-      const [merchant, designatedPayer, value, expiresAt, status, externalRef] = updated;
-      setInvoice({ id: invoice.id, merchant, designatedPayer, amount: value, expiresAt, status, externalRef });
+      setInvoice({
+        id: invoice.id,
+        merchant: updated.merchant,
+        designatedPayer: updated.designatedPayer,
+        amount: updated.amount,
+        expiresAt: updated.expiresAt,
+        status: updated.status,
+        externalRef: updated.externalRef
+      });
       await refreshBalance(account);
       setNotice(`Payment confirmed in block ${receipt.blockNumber.toString()}.`);
     } catch (error) {
