@@ -37,7 +37,14 @@ jobs:
       - name: Deploy contract
         env:
           PRIVATE_KEY: ${{ secrets.AEVUM_DEPLOYER_PRIVATE_KEY }}
-        run: forge script script/Deploy.s.sol:Deploy --rpc-url "$AEVUM_RPC_URL" --broadcast
+        run: |
+          KEY="${PRIVATE_KEY#0x}"
+          KEY="${KEY#0X}"
+          if [[ ! "$KEY" =~ ^[0-9a-fA-F]{64}$ ]]; then
+            echo "AEVUM_DEPLOYER_PRIVATE_KEY must contain exactly 64 hexadecimal characters, optionally prefixed with 0x."
+            exit 1
+          fi
+          PRIVATE_KEY="0x$KEY" forge script script/Deploy.s.sol:Deploy --rpc-url "$AEVUM_RPC_URL" --broadcast
       - name: Preserve deployment record
         run: |
           test -f broadcast/Deploy.s.sol/44005/run-latest.json
