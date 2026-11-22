@@ -2,6 +2,9 @@
 
 
 
+[![.github/workflows/deploy-aevum.yml](https://github.com/ReignnRule11/AevumPay/actions/workflows/deploy-aevum.yml/badge.svg)](https://github.com/ReignnRule11/AevumPay/actions/workflows/deploy-aevum.yml)
+
+
 [![Solidity CI](https://github.com/ReignnRule11/AevumPay/actions/workflows/solidity.yml/badge.svg)](https://github.com/ReignnRule11/AevumPay/actions/workflows/solidity.yml)
 [![Web CI](https://github.com/ReignnRule11/AevumPay/actions/workflows/web.yml/badge.svg)](https://github.com/ReignnRule11/AevumPay/actions/workflows/web.yml)
 A solo-built invoice-based tUSD8 settlement application for QDay Aevum Testnet.
