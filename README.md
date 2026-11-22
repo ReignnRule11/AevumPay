@@ -1,5 +1,6 @@
 # AevumPay — Aevum Builder Challenge #1
 
+[![Web CI](https://github.com/ReignnRule11/AevumPay/actions/workflows/web.yml/badge.svg)](https://github.com/ReignnRule11/AevumPay/actions/workflows/web.yml)
 A solo-built invoice-based tUSD8 settlement application for QDay Aevum Testnet.
 
 > **Status: initial engineering scaffold.** The contract and tests are source files only; they have not yet been compiled, executed, deployed, or independently audited. No real funds.
