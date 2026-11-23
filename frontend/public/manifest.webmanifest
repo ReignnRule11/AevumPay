@@ -1,0 +1,3 @@
+{
+ "id":"/","name":"AevumPay — Stablecoin Invoice Settlement","short_name":"AevumPay","description":"Create and settle tUSD8 invoices on QDay Aevum Testnet.","start_url":"/","scope":"/","display":"standalone","orientation":"portrait-primary","background_color":"#0a1113","theme_color":"#0a1113","categories":["finance","business"],"icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
